@@ -8,10 +8,9 @@ respawn
 respawn limit 5 30
 
 chdir /usr/share/statsd
-setuid statsd
 
 script
-  exec /usr/local/bin/node /usr/share/statsd/stats.js /etc/statsd/config.js 2>&1 >> <%= @log_file %>
+  exec su -s /bin/sh -c 'exec "$0" "$@"' statsd -- /usr/local/bin/node /usr/share/statsd/stats.js /etc/statsd/config.js 2>&1 >> <%= @log_file %>
 end script
 
 emits statsd-running
